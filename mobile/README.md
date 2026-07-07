@@ -1,5 +1,7 @@
 # Mobile
 
-This document describes the purpose of the mobile directory within the repository.
+This document explains the current status of the mobile application area.
 
-## Overview
+## Status
+
+The mobile app is intentionally not initialized until Sprint 1.

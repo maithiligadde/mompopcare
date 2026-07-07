@@ -1,9 +1,16 @@
 # Sprint 000
 
-This document defines the structure for tracking a sprint at the repository level.
+This document defines the Sprint 0 foundation goal and repository setup checklist.
 
-## Objective
+## Goal
 
-## Scope
+- Create product and engineering foundation before application code.
 
-## Notes
+## Checklist
+
+- [x] Repository structure created
+- [x] Project Bible drafted
+- [x] Decision Log initialized
+- [x] Tech stack ADR drafted
+- [x] Backlog created
+- [x] Mobile/backend app initialization deferred

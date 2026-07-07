@@ -1,5 +1,23 @@
 # Backlog
 
-This document is the repository-level list for backlog items and future work intake.
+This document contains the epic-level backlog for future planning beyond Sprint 0.
 
-## Items
+## Epics
+
+- Product Discovery
+- User Personas
+- Care Journey
+- Domain Model
+- Authentication
+- Family Management
+- Care Recipient Profile
+- Care Timeline
+- Medication Management
+- Appointments
+- Reports
+- Care State Engine
+- Daily Brief
+- Notifications
+- AI Extraction
+- Security & Privacy
+- Production Hardening

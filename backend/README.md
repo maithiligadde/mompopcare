@@ -1,5 +1,7 @@
 # Backend
 
-This document describes the purpose of the backend directory within the repository.
+This document explains the current status of the backend services area.
 
-## Overview
+## Status
+
+Backend services are intentionally not initialized until the architecture and domain model are defined.
