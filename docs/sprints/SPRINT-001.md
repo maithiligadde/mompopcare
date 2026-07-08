@@ -6,12 +6,14 @@ Create and validate the first explicit domain model for MomPopCare before databa
 
 ## Sprint Outcomes
 
-- working domain vocabulary
+- minimal working domain vocabulary
 - core relationships
-- working invariants
-- scenario validation
+- essential invariants
+- three scenarios tested
+- deferred complexity explicitly documented
 - explicit open questions
-- no premature database schema
+- no premature authorization architecture
+- no database schema
 
 ## In Scope
 
@@ -37,9 +39,12 @@ Create and validate the first explicit domain model for MomPopCare before databa
 ## Definition of Done
 
 - DOMAIN_MODEL.md exists
+- minimal working domain vocabulary
+- essential invariants
 - three scenarios are tested
-- invariants are explicit
-- open questions are explicit
+- deferred complexity explicitly documented
+- no premature authorization architecture
+- no database schema
 - no unresolved assumption is disguised as a final decision
 
 ## Sprint Review Checklist

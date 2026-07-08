@@ -87,6 +87,7 @@ This document records project-wide product and domain decisions for MomPopCare a
 
 - Decision: Core Care Team and Support Network are distinct concepts.
 - Status: Working
+- Superseded by: Entry 014
 - Date: 2026-07-08
 - Context: The product needs to distinguish ongoing coordinators from selectively involved helpers.
 - Decision: Model a conceptual distinction between Core Care Team and Support Network without finalizing role names or a full permission matrix.
@@ -96,6 +97,7 @@ This document records project-wide product and domain decisions for MomPopCare a
 
 - Decision: Invitation authority is bounded.
 - Status: Working
+- Superseded by: Entry 014
 - Date: 2026-07-08
 - Context: The product should avoid a single-admin bottleneck without allowing uncontrolled privilege escalation.
 - Decision: Require delegation to be explicitly authorized and to avoid unintended privilege escalation, without assuming that access authority and delegation authority are always the same thing.
@@ -118,3 +120,12 @@ This document records project-wide product and domain decisions for MomPopCare a
 - Context: Care State is important to the product, but its storage and derivation model has not been validated yet.
 - Decision: Keep the persistence strategy for Care State explicitly unresolved during Sprint 1.
 - Consequences: The team should avoid premature commitments to stored, computed, materialized, or event-sourced approaches before deeper architecture work.
+
+## Entry 014
+
+- Decision: Sprint 1 domain model is deliberately simplified.
+- Status: Working
+- Date: 2026-07-08
+- Context: The Sprint 1 model was drifting into premature authorization and collaboration complexity beyond the core caregiving coordination problem.
+- Decision: Prefer the simplest model that preserves essential product and privacy invariants. Keep CareCircle as a working recipient-centered boundary, and defer AccessGrant, CareRecord, Support Network modeling, and complex invitation or delegation rules until product evidence requires more complexity.
+- Consequences: Sprint 1 should center on User, CareRecipient, CareCircle, Membership, CareTask, CareEvent, and CareState. Authorization structure remains intentionally unresolved, and superseded working decisions should be treated as deferred rather than finalized direction.

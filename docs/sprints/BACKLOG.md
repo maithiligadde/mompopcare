@@ -15,8 +15,8 @@ This document contains the epic-level backlog for future planning beyond Sprint 
 - Medication Management
 - Appointments
 - Reports
-- Care State Engine
-- Daily Brief
+- CareState
+- Daily Brief (Derived Experience)
 - Notifications
 - AI Extraction
 - Security & Privacy
