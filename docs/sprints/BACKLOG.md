@@ -9,9 +9,9 @@ This document contains the epic-level backlog for future planning beyond Sprint 
 - Care Journey
 - Domain Model
 - Authentication
-- Family Management
+- Care Circle & Membership
 - Care Recipient Profile
-- Care Timeline
+- Care Timeline (Derived Experience)
 - Medication Management
 - Appointments
 - Reports

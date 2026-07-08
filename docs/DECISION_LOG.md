@@ -1,6 +1,6 @@
 # Decision Log
 
-This document records key Sprint 0 product decisions for MomPopCare.
+This document records project-wide product and domain decisions for MomPopCare across sprints.
 
 ## Entry 001
 
@@ -63,7 +63,7 @@ This document records key Sprint 0 product decisions for MomPopCare.
 - Date: 2026-07-08
 - Context: Multi-circle caregivers need a useful cross-circle view without collapsing underlying privacy boundaries.
 - Decision: Treat Home as an attention-based projection across only the Care Circles the authenticated user is authorized to access.
-- Consequences: Home should highlight attention, assignments, time sensitivity, and unknown or stale information without becoming a merged source-of-truth boundary.
+- Consequences: Home should highlight attention, assignments, time sensitivity, and actionable unknown or stale information when freshness was expected, without becoming a merged source-of-truth boundary.
 
 ## Entry 008
 
@@ -98,8 +98,8 @@ This document records key Sprint 0 product decisions for MomPopCare.
 - Status: Working
 - Date: 2026-07-08
 - Context: The product should avoid a single-admin bottleneck without allowing uncontrolled privilege escalation.
-- Decision: Allow trusted caregiver-level participation to extend invitations within bounds, while preventing any member from granting more authority than they possess.
-- Consequences: The future access model must support delegated growth of a circle without casual escalation to maximum privilege.
+- Decision: Require delegation to be explicitly authorized and to avoid unintended privilege escalation, without assuming that access authority and delegation authority are always the same thing.
+- Consequences: The future access model must distinguish access from delegation and support bounded circle growth without casual escalation to maximum privilege.
 
 ## Entry 012
 

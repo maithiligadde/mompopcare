@@ -70,7 +70,7 @@ Working Draft — Sprint 1
 - Important relationships:
   - Connects a User to one CareCircle.
   - Supports the working distinction between Core Care Team and Support Network participation.
-  - Constrains invitation authority so no member can grant more authority than they possess.
+  - Interacts with delegation questions, which remain explicitly authorized and unresolved in detail.
 - Unresolved questions:
   - Do support participants always require circle membership, or can some task-specific involvement happen without it?
   - What is the minimum working role structure before a final permission system is defined?
@@ -101,11 +101,13 @@ Working Draft — Sprint 1
   - What level of event detail should be broadly shareable versus narrowly restricted?
   - How should uncertainty or incomplete event knowledge be represented without overstating certainty?
 
+## Candidate / Unresolved Abstractions
+
 ### CareRecord
 
-- Definition: A working concept for sensitive care information that may need structured or intentional access handling.
-- Responsibility: Hold the place in the model for care information that should not be equated with general participation.
-- What it is not: Not finalized as a specific storage model; not merely document storage; not yet proven to be the right abstraction.
+- Definition: A candidate abstraction for sensitive care information that may eventually need more specific domain treatment.
+- Responsibility: Hold a place for unresolved care-information modeling questions without prematurely approving a core implementation concept.
+- What it is not: Not an approved core implementation concept; not merely document storage; not yet proven to be the right abstraction.
 - Important relationships:
   - Associated with a CareRecipient and CareCircle context.
   - Relevant to access distinctions between Core Care Team and Support Network.
@@ -113,19 +115,29 @@ Working Draft — Sprint 1
 - Unresolved questions:
   - Is CareRecord a useful domain abstraction or too generic to guide implementation well?
   - Which information truly belongs in this concept versus adjacent concepts?
+- Notes:
+  - It is currently too generic to approve as a core implementation concept.
+  - It may later be replaced by more specific domain concepts.
+  - No implementation should depend on CareRecord yet.
+
+## Candidate / Unresolved Access Concepts
 
 ### AccessGrant
 
-- Definition: A working concept for explicitly bounded access that is narrower or more intentional than broad participation.
-- Responsibility: Express that participation and sensitive-data access are different concepts.
-- What it is not: Not a finalized permissions engine; not proof that role-derived access is unnecessary.
+- Definition: A candidate concept for modeling explicitly bounded access if the domain later needs it.
+- Responsibility: Preserve the distinction between participation and access while leaving the exact access mechanism unresolved.
+- What it is not: Not a finalized permissions engine; not proof that explicit grants are required; not proof that role-derived access is sufficient.
 - Important relationships:
   - Applies within a CareCircle boundary.
-  - May complement CircleMembership where explicit sharing is needed.
-  - Helps model support participation that should not imply browsing the full private care timeline or record.
+  - May complement CircleMembership if explicit sharing later proves necessary.
+  - Helps keep support participation conceptually separate from broad sensitive-data visibility.
 - Unresolved questions:
   - How much access should be role-derived versus grant-based?
-  - What grant shapes are needed without creating a complex granular permission matrix too early?
+  - Should the eventual access model rely on explicit grants, role-based rules, capabilities, another mechanism, or a combination?
+- Notes:
+  - Participation and access remain separate concepts.
+  - The exact access mechanism is unresolved.
+  - Do not assume explicit grants, RBAC, capabilities, or another mechanism yet.
 
 ## Core Relationships
 
@@ -166,8 +178,9 @@ User
   - needs attention
   - actions assigned to the user
   - time-sensitive upcoming items
-  - unknown or stale care information
+  - actionable unknown or stale information when freshness was expected and the gap may matter to care coordination
 - Home should suppress routine noise where possible.
+- Unknown alone is not automatically attention-worthy.
 - Home is a derived experience, not a merged data boundary and not a new source-of-truth entity.
 
 ## Source Concepts vs Derived Experiences
@@ -179,6 +192,7 @@ User
   - CircleMembership
   - CareTask
   - CareEvent
+- Candidate or unresolved concepts currently under consideration include:
   - CareRecord
   - AccessGrant
 - Derived experiences currently include:
@@ -202,7 +216,8 @@ User
 - A CareRecipient may optionally link to a User.
 - Participation does not automatically imply access to sensitive care data.
 - Support participation does not automatically grant full care-record visibility.
-- No member may grant authority exceeding their own.
+- Delegation must be explicitly authorized and must not permit unintended privilege escalation.
+- Access authority and delegation authority are not necessarily the same thing.
 - Unknown care information must remain unknown.
 
 ## Scenario Validation
@@ -224,6 +239,7 @@ User
 - Unresolved questions:
   - Do extended family helpers require full circle membership or only task-specific involvement?
   - What minimum information is needed for helpers to act effectively without oversharing?
+  - If a sibling attempts to revoke another sibling after a family dispute, what authority should be required for that action and how should the model distinguish participation conflict from access-control authority?
 
 ### Scenario 2: Independent active parent
 
@@ -240,6 +256,7 @@ User
 - Unresolved questions:
   - How should recipient participation interact with existing caregiver authority in difficult edge cases?
   - What should happen when recipient preferences and caregiver expectations conflict?
+  - If an active CareRecipient wants to remove or restrict the caregiver who originally created the circle, what model constraints should govern that change without assuming creator primacy or full recipient override?
 
 ### Scenario 3: One caregiver across multiple recipients
 
@@ -255,12 +272,14 @@ User
 - Unresolved questions:
   - How should stale or unknown information be surfaced fairly across multiple circles without creating noise?
   - What cross-circle summaries are useful without implying shared access where none exists?
+  - If a multi-circle caregiver loses authorization to one circle while retaining access to the others, what model guarantees are needed so Home immediately stops projecting information from the revoked circle?
 
 ## Open Questions
 
 - What should the final role names be?
 - What is the exact permission model?
 - How should AccessGrant interact with role-derived access?
+- May one CareRecipient be associated with more than one CareCircle, or is the intended relationship one-to-one?
 - Is CareRecord a useful abstraction or too generic?
 - What is the right persistence or derivation strategy for Care State?
 - What invitation and revocation edge cases must be supported first?
