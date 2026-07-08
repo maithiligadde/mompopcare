@@ -33,17 +33,17 @@ export function buildHomeProjection(data: CareData, userId: string, now: Date): 
         continue;
       }
 
-      if (isBeforeToday(task.dueAt, now)) {
+      if (isBeforeToday(task.dueDate, now)) {
         needsAttention.push({ recipient, task });
-      } else if (isToday(task.dueAt, now)) {
+      } else if (isToday(task.dueDate, now)) {
         today.push({ recipient, task });
       }
     }
   }
 
   needsAttention.sort((left, right) => {
-    const leftDue = left.task.dueAt ?? "9999-12-31";
-    const rightDue = right.task.dueAt ?? "9999-12-31";
+    const leftDue = left.task.dueDate ?? "9999-12-31";
+    const rightDue = right.task.dueDate ?? "9999-12-31";
 
     return leftDue.localeCompare(rightDue);
   });

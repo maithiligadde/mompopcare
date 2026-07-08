@@ -53,7 +53,7 @@ export function createInMemoryCareRepository(): CareRepository {
         id: nextId("task"),
         careRecipientId: input.careRecipientId,
         title: input.title,
-        dueAt: input.dueAt,
+        dueDate: input.dueDate,
         status: "pending"
       };
 

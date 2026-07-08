@@ -2,7 +2,7 @@
 
 ## Status
 
-Working Draft — Sprint 1
+Working Draft — Updated through Sprint 2
 
 ## Purpose
 
@@ -190,7 +190,7 @@ CareRecipient
 - Participants:
   - adult children
   - CareRecipient who may not use the app initially
-- Circle boundaries:
+- Context boundaries:
   - one recipient context centers on the recipient
   - participating Users are members of that recipient context only
 - What the simplified model supports:
@@ -206,7 +206,7 @@ CareRecipient
 - Participants:
   - active CareRecipient who uses the app
   - family caregivers who also participate
-- Circle boundaries:
+- Context boundaries:
   - one recipient context still centers on the recipient
   - the recipient may optionally link to a User without recreating the care context
 - What the simplified model supports:
@@ -221,7 +221,7 @@ CareRecipient
 
 - Participants:
   - one User coordinating care for Mom, Dad, and Grandmother
-- Circle boundaries:
+- Context boundaries:
   - each recipient has a separate recipient context
   - membership for one recipient does not grant access to another
 - What the simplified model supports:

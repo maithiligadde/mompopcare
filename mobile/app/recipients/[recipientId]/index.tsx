@@ -58,7 +58,7 @@ export default function RecipientOverviewScreen() {
               <View key={task.id} style={styles.taskRow}>
                 <View style={styles.taskText}>
                   <Text style={styles.taskTitle}>{task.title}</Text>
-                  {task.dueAt ? <Text style={styles.dueLabel}>{formatDueLabel(task.dueAt, now)}</Text> : null}
+                  {task.dueDate ? <Text style={styles.dueLabel}>{formatDueLabel(task.dueDate, now)}</Text> : null}
                 </View>
                 <SecondaryButton label="Complete" onPress={() => completeCareTask(task.id)} />
               </View>

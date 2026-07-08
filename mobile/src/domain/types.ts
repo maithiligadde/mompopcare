@@ -24,7 +24,7 @@ export interface CareTask {
   id: string;
   careRecipientId: string;
   title: string;
-  dueAt?: string;
+  dueDate?: string;
   status: TaskStatus;
   completedAt?: string;
 }

@@ -30,7 +30,7 @@ export function isToday(isoDate: string | undefined, now: Date): boolean {
   return startOfLocalDay(dueDate).getTime() === startOfLocalDay(now).getTime();
 }
 
-export function parseDueInput(input: string): { dueAt?: string; error?: string } {
+export function parseDueInput(input: string): { dueDate?: string; error?: string } {
   const trimmed = input.trim();
 
   if (!trimmed) {
@@ -41,7 +41,7 @@ export function parseDueInput(input: string): { dueAt?: string; error?: string }
     return { error: "Use a date like YYYY-MM-DD, or leave it blank." };
   }
 
-  return { dueAt: trimmed };
+  return { dueDate: trimmed };
 }
 
 export function toDateInputValue(date: Date): string {

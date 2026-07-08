@@ -39,7 +39,7 @@ export default function AddTaskScreen() {
     addCareTask({
       careRecipientId: recipient.id,
       title: trimmedTitle,
-      dueAt: parsedDue.dueAt
+      dueDate: parsedDue.dueDate
     });
 
     router.replace({

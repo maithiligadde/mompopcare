@@ -8,7 +8,7 @@ export interface AddCareRecipientInput {
 export interface AddCareTaskInput {
   careRecipientId: string;
   title: string;
-  dueAt?: string;
+  dueDate?: string;
 }
 
 export interface CareRepository {

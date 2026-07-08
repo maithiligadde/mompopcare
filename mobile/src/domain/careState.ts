@@ -2,9 +2,9 @@ import { isBeforeToday, isToday } from "./date";
 import { CareStateSummary, CareTask } from "./types";
 
 export function deriveCareState(tasks: CareTask[], now: Date): CareStateSummary {
-  const overdueIncompleteCount = tasks.filter((task) => task.status === "pending" && isBeforeToday(task.dueAt, now)).length;
-  const dueTodayIncompleteCount = tasks.filter((task) => task.status === "pending" && isToday(task.dueAt, now)).length;
-  const dueTodayTaskCount = tasks.filter((task) => isToday(task.dueAt, now)).length;
+  const overdueIncompleteCount = tasks.filter((task) => task.status === "pending" && isBeforeToday(task.dueDate, now)).length;
+  const dueTodayIncompleteCount = tasks.filter((task) => task.status === "pending" && isToday(task.dueDate, now)).length;
+  const dueTodayTaskCount = tasks.filter((task) => isToday(task.dueDate, now)).length;
 
   return {
     overdueIncompleteCount,

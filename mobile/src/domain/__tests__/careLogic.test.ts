@@ -7,7 +7,7 @@ import { getUserScopedRecipient, isRecipientAvailableToUser } from "../selectors
 import { CareData, PROTOTYPE_USER_ID } from "../types";
 import { createInMemoryCareRepository, createInitialCareData } from "../../repositories/inMemoryCareRepository";
 
-const NOW = new Date("2026-07-08T12:00:00.000Z");
+const NOW = new Date(2026, 6, 8, 12, 0, 0);
 const TWO_DAYS_AGO = "2026-07-06";
 const YESTERDAY = "2026-07-07";
 const TODAY = "2026-07-08";
@@ -18,7 +18,7 @@ test("overdue incomplete task appears as needing attention", () => {
   const task = repository.addCareTask({
     careRecipientId: recipient.id,
     title: "Call clinic",
-    dueAt: YESTERDAY
+    dueDate: YESTERDAY
   });
 
   const projection = buildHomeProjection(repository.getSnapshot(), PROTOTYPE_USER_ID, NOW);
@@ -34,7 +34,7 @@ test("completed task no longer appears as needing attention", () => {
   const task = repository.addCareTask({
     careRecipientId: recipient.id,
     title: "Pick up reports",
-    dueAt: YESTERDAY
+    dueDate: YESTERDAY
   });
 
   repository.completeCareTask(task.id, TODAY);
@@ -80,14 +80,14 @@ test("Home projection includes only recipient contexts available to the current 
         id: "task_authorized",
         careRecipientId: "recipient_authorized",
         title: "Call clinic",
-        dueAt: YESTERDAY,
+        dueDate: YESTERDAY,
         status: "pending"
       },
       {
         id: "task_unauthorized",
         careRecipientId: "recipient_unauthorized",
         title: "Schedule follow-up",
-        dueAt: YESTERDAY,
+        dueDate: YESTERDAY,
         status: "pending"
       }
     ],
@@ -146,12 +146,12 @@ test("one recipient's task remains associated with the correct recipient context
   const taskA = repository.addCareTask({
     careRecipientId: recipientA.id,
     title: "Call clinic",
-    dueAt: YESTERDAY
+    dueDate: YESTERDAY
   });
   repository.addCareTask({
     careRecipientId: recipientB.id,
     title: "Pick up reports",
-    dueAt: TODAY
+    dueDate: TODAY
   });
 
   const projection = buildHomeProjection(repository.getSnapshot(), PROTOTYPE_USER_ID, NOW);
@@ -167,12 +167,12 @@ test("completing one recipient's task does not mutate another recipient's state"
   const taskA = repository.addCareTask({
     careRecipientId: recipientA.id,
     title: "Call clinic",
-    dueAt: YESTERDAY
+    dueDate: YESTERDAY
   });
   const taskB = repository.addCareTask({
     careRecipientId: recipientB.id,
     title: "Pick up reports",
-    dueAt: YESTERDAY
+    dueDate: YESTERDAY
   });
 
   repository.completeCareTask(taskA.id, TODAY);
@@ -192,7 +192,7 @@ test("CareState does not interpret missing information as positive medical statu
 });
 
 test("valid YYYY-MM-DD due date is accepted", () => {
-  assert.deepEqual(parseDueInput("2026-07-08"), { dueAt: "2026-07-08" });
+  assert.deepEqual(parseDueInput("2026-07-08"), { dueDate: "2026-07-08" });
 });
 
 test("invalid due date format is rejected", () => {
@@ -226,12 +226,12 @@ test("overdue Home attention items are sorted oldest first", () => {
   const newer = repository.addCareTask({
     careRecipientId: recipient.id,
     title: "Newer overdue",
-    dueAt: YESTERDAY
+    dueDate: YESTERDAY
   });
   const older = repository.addCareTask({
     careRecipientId: recipient.id,
     title: "Older overdue",
-    dueAt: TWO_DAYS_AGO
+    dueDate: TWO_DAYS_AGO
   });
 
   const projection = buildHomeProjection(repository.getSnapshot(), PROTOTYPE_USER_ID, NOW);

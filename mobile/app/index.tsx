@@ -45,7 +45,7 @@ export default function HomeScreen() {
                       <Text style={styles.recipientName}>{item.recipient.displayName}</Text>
                       <Text style={styles.taskTitle}>{item.task.title}</Text>
                     </View>
-                    <Text style={styles.overdueLabel}>{formatDueLabel(item.task.dueAt, now)}</Text>
+                    <Text style={styles.overdueLabel}>{formatDueLabel(item.task.dueDate, now)}</Text>
                   </View>
                 ))}
               </View>
