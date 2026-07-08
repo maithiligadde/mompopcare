@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "MomPopCare",
+    "slug": "mompopcare",
+    "scheme": "mompopcare",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "plugins": [
+      "expo-router",
+      "expo-status-bar"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}
