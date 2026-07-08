@@ -129,3 +129,12 @@ This document records project-wide product and domain decisions for MomPopCare a
 - Context: The Sprint 1 model was drifting into premature authorization and collaboration complexity beyond the core caregiving coordination problem.
 - Decision: Prefer the simplest model that preserves essential product and privacy invariants. Keep CareCircle as a working recipient-centered boundary, and defer AccessGrant, CareRecord, Support Network modeling, and complex invitation or delegation rules until product evidence requires more complexity.
 - Consequences: Sprint 1 should center on User, CareRecipient, CareCircle, Membership, CareTask, CareEvent, and CareState. Authorization structure remains intentionally unresolved, and superseded working decisions should be treated as deferred rather than finalized direction.
+
+## Entry 015
+
+- Decision: CareCircle is retained provisionally.
+- Status: Working
+- Date: 2026-07-08
+- Context: CareCircle may provide a useful recipient-centered collaboration and isolation boundary, but its necessity over direct Membership-to-CareRecipient association is not proven.
+- Decision: Retain CareCircle as a working internal concept, do not finalize it as user-facing, and keep direct User/Membership-to-CareRecipient association under consideration as a simpler alternative.
+- Consequences: Sprint 2 vertical-slice implementation should test whether CareCircle has independent responsibility that CareRecipient cannot cleanly own. Simplicity remains preferred unless the abstraction proves necessary.

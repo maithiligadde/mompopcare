@@ -58,7 +58,10 @@ Working Draft — Sprint 1
 - Unresolved questions:
   - Is CareCircle the final internal term?
   - Is CareCircle user-facing or purely internal?
+  - Does CareCircle provide unique domain value as a collaboration/isolation boundary?
+  - Could Membership attach directly to CareRecipient without losing an important concept?
   - May one CareRecipient be associated with more than one CareCircle, or is the intended relationship one-to-one?
+- Note: CareCircle must justify its existence through implementation evidence. It should not survive merely because it is already documented.
 
 ### Membership
 
