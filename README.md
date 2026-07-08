@@ -4,7 +4,7 @@ MomPopCare is a family care coordination platform focused on reducing the cognit
 
 ## Current Status
 
-Sprint 0: repository and product foundation.
+Sprint 1 — Domain Discovery.
 
 ## Repository Structure
 
