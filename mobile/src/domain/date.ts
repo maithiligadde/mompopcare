@@ -7,9 +7,9 @@ export function isBeforeToday(isoDate: string | undefined, now: Date): boolean {
     return false;
   }
 
-  const dueDate = new Date(isoDate);
+  const dueDate = parseDateOnly(isoDate);
 
-  if (Number.isNaN(dueDate.getTime())) {
+  if (!dueDate) {
     return false;
   }
 
@@ -21,9 +21,9 @@ export function isToday(isoDate: string | undefined, now: Date): boolean {
     return false;
   }
 
-  const dueDate = new Date(isoDate);
+  const dueDate = parseDateOnly(isoDate);
 
-  if (Number.isNaN(dueDate.getTime())) {
+  if (!dueDate) {
     return false;
   }
 
@@ -37,13 +37,11 @@ export function parseDueInput(input: string): { dueAt?: string; error?: string }
     return {};
   }
 
-  const date = /^\d{4}-\d{2}-\d{2}$/.test(trimmed) ? new Date(`${trimmed}T12:00:00`) : new Date(trimmed);
-
-  if (Number.isNaN(date.getTime())) {
+  if (!parseDateOnly(trimmed)) {
     return { error: "Use a date like YYYY-MM-DD, or leave it blank." };
   }
 
-  return { dueAt: date.toISOString() };
+  return { dueAt: trimmed };
 }
 
 export function toDateInputValue(date: Date): string {
@@ -67,7 +65,13 @@ export function formatDueLabel(isoDate: string | undefined, now: Date): string {
     return "Due today";
   }
 
-  return `Due ${new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric" }).format(new Date(isoDate))}`;
+  const dueDate = parseDateOnly(isoDate);
+
+  if (!dueDate) {
+    return "No due date";
+  }
+
+  return `Due ${new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric" }).format(dueDate)}`;
 }
 
 export function formatEventTimestamp(isoDate: string): string {
@@ -77,4 +81,23 @@ export function formatEventTimestamp(isoDate: string): string {
     hour: "numeric",
     minute: "2-digit"
   }).format(new Date(isoDate));
+}
+
+function parseDateOnly(value: string): Date | undefined {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+
+  if (!match) {
+    return undefined;
+  }
+
+  const year = Number(match[1]);
+  const monthIndex = Number(match[2]) - 1;
+  const day = Number(match[3]);
+  const date = new Date(year, monthIndex, day);
+
+  if (date.getFullYear() !== year || date.getMonth() !== monthIndex || date.getDate() !== day) {
+    return undefined;
+  }
+
+  return date;
 }

@@ -10,15 +10,14 @@ export function createInitialCareData(): CareData {
       }
     ],
     careRecipients: [],
-    careCircles: [],
     memberships: [],
     careTasks: [],
     careEvents: []
   };
 }
 
-export function createInMemoryCareRepository(initialData: CareData = createInitialCareData()): CareRepository {
-  let data: CareData = cloneCareData(initialData);
+export function createInMemoryCareRepository(): CareRepository {
+  let data: CareData = cloneCareData(createInitialCareData());
   let nextIdNumber = 1;
 
   const nextId = (prefix: string): string => {
@@ -35,20 +34,15 @@ export function createInMemoryCareRepository(initialData: CareData = createIniti
         displayName: input.displayName,
         relationshipLabel: input.relationshipLabel
       };
-      const careCircle = {
-        id: nextId("circle"),
-        careRecipientId: recipient.id
-      };
       const membership = {
         id: nextId("membership"),
         userId: PROTOTYPE_USER_ID,
-        careCircleId: careCircle.id
+        careRecipientId: recipient.id
       };
 
       data = {
         ...data,
         careRecipients: [...data.careRecipients, recipient],
-        careCircles: [...data.careCircles, careCircle],
         memberships: [...data.memberships, membership]
       };
 
@@ -104,11 +98,10 @@ export function createInMemoryCareRepository(initialData: CareData = createIniti
 
 function cloneCareData(data: CareData): CareData {
   return {
-    users: [...data.users],
-    careRecipients: [...data.careRecipients],
-    careCircles: [...data.careCircles],
-    memberships: [...data.memberships],
-    careTasks: [...data.careTasks],
-    careEvents: [...data.careEvents]
+    users: data.users.map((user) => ({ ...user })),
+    careRecipients: data.careRecipients.map((recipient) => ({ ...recipient })),
+    memberships: data.memberships.map((membership) => ({ ...membership })),
+    careTasks: data.careTasks.map((task) => ({ ...task })),
+    careEvents: data.careEvents.map((event) => ({ ...event }))
   };
 }

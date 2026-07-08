@@ -1,6 +1,6 @@
 import { deriveCareState } from "./careState";
 import { isBeforeToday, isToday } from "./date";
-import { getRecipientTasks } from "./selectors";
+import { getAuthorizedRecipientIds, getRecipientTasks } from "./selectors";
 import { CareData, CareRecipient, CareStateSummary, CareTask } from "./types";
 
 export interface HomeTaskItem {
@@ -17,18 +17,6 @@ export interface HomeProjection {
   needsAttention: HomeTaskItem[];
   today: HomeTaskItem[];
   recipients: HomeRecipientItem[];
-}
-
-export function getAuthorizedRecipientIds(data: CareData, userId: string): Set<string> {
-  const circleIdsForUser = new Set(
-    data.memberships.filter((membership) => membership.userId === userId).map((membership) => membership.careCircleId)
-  );
-
-  return new Set(
-    data.careCircles
-      .filter((circle) => circleIdsForUser.has(circle.id))
-      .map((circle) => circle.careRecipientId)
-  );
 }
 
 export function buildHomeProjection(data: CareData, userId: string, now: Date): HomeProjection {
@@ -52,6 +40,13 @@ export function buildHomeProjection(data: CareData, userId: string, now: Date): 
       }
     }
   }
+
+  needsAttention.sort((left, right) => {
+    const leftDue = left.task.dueAt ?? "9999-12-31";
+    const rightDue = right.task.dueAt ?? "9999-12-31";
+
+    return leftDue.localeCompare(rightDue);
+  });
 
   return {
     needsAttention,

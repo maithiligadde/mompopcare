@@ -26,9 +26,9 @@ Working Draft — Sprint 1
 
 - Definition: An account holder.
 - Responsibility: Participate in authorized care coordination and receive user-scoped experiences such as Home.
-- What it is not: Not automatically a CareRecipient and not automatically entitled to every circle’s information.
+- What it is not: Not automatically a CareRecipient and not automatically entitled to every recipient context.
 - Important relationships:
-  - May belong to multiple CareCircles through Membership.
+  - May belong to multiple CareRecipient contexts through Membership.
   - May optionally link to a CareRecipient.
 - Unresolved questions:
   - What is the final membership model?
@@ -40,37 +40,19 @@ Working Draft — Sprint 1
 - Responsibility: Anchor the care context that tasks, events, and state are about.
 - What it is not: Not required to have an app account and not equivalent to a User.
 - Important relationships:
-  - Is centered by a CareCircle.
+  - May be associated with Users through Membership.
   - May optionally link to a User later.
 - Unresolved questions:
-  - May one CareRecipient be associated with more than one CareCircle, or is the intended relationship one-to-one?
   - How should recipient authority work once linked to a User?
-
-### CareCircle
-
-- Definition: A working internal collaboration and isolation boundary around exactly one CareRecipient.
-- Responsibility: Keep one recipient-centered care context separate from another.
-- What it is not: Not necessarily a prominent user-facing concept and not a merged family workspace across recipients.
-- Important relationships:
-  - Centers on exactly one CareRecipient.
-  - Has Membership connections to Users.
-  - Contains CareTasks, CareEvents, and CareState for that recipient context.
-- Unresolved questions:
-  - Is CareCircle the final internal term?
-  - Is CareCircle user-facing or purely internal?
-  - Does CareCircle provide unique domain value as a collaboration/isolation boundary?
-  - Could Membership attach directly to CareRecipient without losing an important concept?
-  - May one CareRecipient be associated with more than one CareCircle, or is the intended relationship one-to-one?
-- Note: CareCircle must justify its existence through implementation evidence. It should not survive merely because it is already documented.
 
 ### Membership
 
-- Definition: Connects a User to a CareCircle.
-- Responsibility: Represent that a User belongs to a specific recipient-centered care context.
+- Definition: Connects a User to a CareRecipient context.
+- Responsibility: Represent that a User can participate in coordination for a specific CareRecipient.
 - What it is not: Not a full role hierarchy and not a granular permission matrix.
 - Important relationships:
-  - Connects a User to one CareCircle.
-  - Enables a User to belong to multiple CareCircles while keeping each circle isolated.
+  - Connects a User directly to one CareRecipient.
+  - Enables a User to belong to multiple recipient contexts while keeping each context isolated.
 - Unresolved questions:
   - What is the final membership model?
   - What invitation and revocation rules should apply before production authorization implementation?
@@ -81,7 +63,7 @@ Working Draft — Sprint 1
 - Responsibility: Represent pending or expected care coordination work.
 - What it is not: Not proof that something already happened and not the same as a CareEvent.
 - Important relationships:
-  - Exists within a CareCircle.
+  - Exists within a CareRecipient context.
   - Contributes to understanding what is pending and what needs attention.
 - Unresolved questions:
   - What is the minimum task context needed to support coordination well?
@@ -93,7 +75,7 @@ Working Draft — Sprint 1
 - Responsibility: Represent completed or observed care activity.
 - What it is not: Not a future obligation and not the same as a CareTask.
 - Important relationships:
-  - Exists within a CareCircle.
+  - Exists within a CareRecipient context.
   - Contributes to understanding what has been done.
   - Can inform Timeline and related derived experiences.
 - Unresolved questions:
@@ -106,7 +88,7 @@ Working Draft — Sprint 1
 - Responsibility: Help answer what is complete, what is pending, what needs attention, and what is unknown.
 - What it is not: Not a finalized storage strategy and not yet a finalized implementation model.
 - Important relationships:
-  - Exists within a CareCircle context.
+  - Exists within a CareRecipient context.
   - Is informed by underlying care activity such as tasks and events.
   - Supports derived experiences such as Home and briefs.
 - Unresolved questions:
@@ -118,36 +100,35 @@ Working Draft — Sprint 1
 ```text
 User
   |
-  +-- Membership --> CareCircle --> exactly one CareRecipient
+  +-- Membership --> CareRecipient
   |
   +-- optional link -----------> CareRecipient
 
-CareCircle
+CareRecipient
   |
   +-- CareTask
   +-- CareEvent
   +-- CareState
 ```
 
-- A User may belong to multiple CareCircles.
+- A User may belong to multiple CareRecipient contexts.
 
 ## Core Invariants
 
-- One CareCircle centers on exactly one CareRecipient.
-- A User may belong to multiple CareCircles.
-- Membership in one CareCircle grants no access to another.
+- A User may belong to multiple CareRecipient contexts.
+- Membership for one CareRecipient grants no access to another.
 - CareRecipient and User are separate concepts.
 - A CareRecipient may optionally link to a User.
-- Home may aggregate attention across only the circles the authenticated User is authorized to access.
+- Home may aggregate attention across only the recipient contexts the authenticated User is authorized to access.
 - Unknown care information must remain unknown.
 - The system must not claim medical health or safety based on incomplete data.
 
 ## Home Projection
 
 - Home is user-scoped.
-- Home may aggregate attention across authorized circles.
+- Home may aggregate attention across authorized recipient contexts.
 - Home is not a merged data boundary.
-- Revoked access must remove that circle from future Home projections.
+- Revoked access must remove that recipient context from future Home projections.
 - Home should prioritize:
   - actionable items needing attention
   - actions assigned to the user
@@ -171,6 +152,10 @@ CareCircle
 
 ## Deferred / Unresolved Abstractions
 
+- CareCircle
+  - Sprint 2 implementation evidence showed CareCircle added indirection without independent responsibility.
+  - It may be reconsidered only if future evidence requires a collaboration context with its own lifecycle or responsibilities beyond CareRecipient.
+  - Historical reasoning is preserved in the Decision Log.
 - CareRecord
 - It is currently too generic.
 - No implementation should depend on it yet.
@@ -206,8 +191,8 @@ CareCircle
   - adult children
   - CareRecipient who may not use the app initially
 - Circle boundaries:
-  - one CareCircle centers on the recipient
-  - participating Users belong to that circle only
+  - one recipient context centers on the recipient
+  - participating Users are members of that recipient context only
 - What the simplified model supports:
   - multiple trusted family caregivers in one recipient-centered context
   - tasks, events, and care state for coordination
@@ -222,7 +207,7 @@ CareCircle
   - active CareRecipient who uses the app
   - family caregivers who also participate
 - Circle boundaries:
-  - one CareCircle still centers on the recipient
+  - one recipient context still centers on the recipient
   - the recipient may optionally link to a User without recreating the care context
 - What the simplified model supports:
   - recipient participation conceptually
@@ -237,21 +222,18 @@ CareCircle
 - Participants:
   - one User coordinating care for Mom, Dad, and Grandmother
 - Circle boundaries:
-  - each recipient has a separate CareCircle
-  - membership in one circle does not grant access to another
+  - each recipient has a separate recipient context
+  - membership for one recipient does not grant access to another
 - What the simplified model supports:
-  - one User belonging to multiple CareCircles
-  - Home aggregating attention only across authorized circles
-  - removal of revoked circles from future Home projections
+  - one User belonging to multiple recipient contexts
+  - Home aggregating attention only across authorized recipient contexts
+  - removal of revoked recipient contexts from future Home projections
 - Unresolved questions:
-  - how to define actionable stale or unknown information across multiple circles
+  - how to define actionable stale or unknown information across multiple recipient contexts
   - how authorization revocation should be implemented before production
 
 ## Open Questions
 
-- final naming: CareCircle vs another internal term
-- whether CareCircle is user-facing
-- whether one CareRecipient may have multiple CareCircles
 - final membership model
 - final authorization model
 - invitation/revocation rules

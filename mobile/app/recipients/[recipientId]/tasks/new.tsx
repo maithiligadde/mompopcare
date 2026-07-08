@@ -5,12 +5,13 @@ import { PrimaryButton, SecondaryButton } from "../../../../src/components/Butto
 import { Screen } from "../../../../src/components/Screen";
 import { TextField } from "../../../../src/components/TextField";
 import { parseDueInput, toDateInputValue } from "../../../../src/domain/date";
+import { getUserScopedRecipient } from "../../../../src/domain/selectors";
 import { useCare } from "../../../../src/features/care/CareProvider";
 
 export default function AddTaskScreen() {
   const { recipientId } = useLocalSearchParams<{ recipientId: string }>();
-  const { snapshot, addCareTask } = useCare();
-  const recipient = snapshot.careRecipients.find((item) => item.id === recipientId);
+  const { snapshot, user, addCareTask } = useCare();
+  const recipient = recipientId ? getUserScopedRecipient(snapshot, user.id, recipientId) : undefined;
   const [title, setTitle] = useState("");
   const [dueInput, setDueInput] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -52,6 +53,7 @@ export default function AddTaskScreen() {
       <Screen>
         <View style={styles.header}>
           <Text style={styles.title}>Recipient not found</Text>
+          <Text style={styles.copy}>This care recipient is unavailable from the current prototype user context.</Text>
           <SecondaryButton label="Back to Home" onPress={() => router.replace("/")} />
         </View>
       </Screen>
@@ -70,7 +72,7 @@ export default function AddTaskScreen() {
           <View style={styles.form}>
             <TextField label="Task title" value={title} onChangeText={setTitle} placeholder="Call clinic" />
             <TextField
-              label="Due date/time, optional"
+              label="Due date, optional"
               value={dueInput}
               onChangeText={setDueInput}
               placeholder="YYYY-MM-DD"

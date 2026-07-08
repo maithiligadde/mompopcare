@@ -14,15 +14,10 @@ export interface CareRecipient {
   relationshipLabel?: string;
 }
 
-export interface CareCircle {
-  id: string;
-  careRecipientId: string;
-}
-
 export interface Membership {
   id: string;
   userId: string;
-  careCircleId: string;
+  careRecipientId: string;
 }
 
 export interface CareTask {
@@ -46,7 +41,6 @@ export interface CareEvent {
 export interface CareData {
   users: User[];
   careRecipients: CareRecipient[];
-  careCircles: CareCircle[];
   memberships: Membership[];
   careTasks: CareTask[];
   careEvents: CareEvent[];

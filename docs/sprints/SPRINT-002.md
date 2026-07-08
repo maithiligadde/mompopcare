@@ -54,23 +54,27 @@ Give MomPopCare its first working product shape through one end-to-end caregiver
 - derived state updates
 - multiple recipient contexts remain separated
 - focused domain tests exist
-- CareCircle implementation evidence documented
+- CareCircle simplification evidence documented
 - no backend initialized
+
+## Access Scoping Note
+
+- Recipient access checks in this slice are frontend prototype scoping only.
+- Real authorization belongs to future backend enforcement.
 
 ## CareCircle Evidence
 
 - Value added:
-  - CareCircle provides a minimal internal membership boundary for determining which recipients the prototype user can see.
-  - It gives Home a way to project only authorized recipient contexts without exposing CareCircle as UI language.
+  - No independent responsibility was proven in this slice.
 - Indirection added:
-  - Home must resolve Membership to CareCircle to CareRecipient before showing recipient-focused data.
+  - Home had to resolve Membership to CareCircle to CareRecipient before showing recipient-focused data.
   - Tasks and events are simpler when attached directly to CareRecipient, so adding careCircleId to them was unnecessary for this slice.
   - Recipient-focused routes did not need CareCircle identifiers.
 - Whether direct Membership-to-CareRecipient appears simpler:
-  - Yes, for this slice direct Membership-to-CareRecipient appears simpler because CareCircle only mediates authorization context and does not yet own independent behavior.
+  - Yes. Direct Membership-to-CareRecipient is simpler for this slice.
 - Current recommendation:
-  - insufficient evidence
-  - Keep CareCircle provisional until Sprint 2 review decides whether the membership boundary is enough value to retain.
+  - simplify toward direct recipient membership for the current MVP model
+  - Defer CareCircle until future evidence shows a need for an independent collaboration context.
 
 ## Architecture Questions Exposed by Implementation
 

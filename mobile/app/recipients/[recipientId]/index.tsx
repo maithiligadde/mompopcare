@@ -4,13 +4,13 @@ import { PrimaryButton, SecondaryButton } from "../../../src/components/Button";
 import { Screen } from "../../../src/components/Screen";
 import { formatCareSummary, deriveCareState } from "../../../src/domain/careState";
 import { formatDueLabel, formatEventTimestamp } from "../../../src/domain/date";
-import { getRecipientTasks, getRecentEventsForRecipient } from "../../../src/domain/selectors";
+import { getRecipientTasks, getRecentEventsForRecipient, getUserScopedRecipient } from "../../../src/domain/selectors";
 import { useCare } from "../../../src/features/care/CareProvider";
 
 export default function RecipientOverviewScreen() {
   const { recipientId } = useLocalSearchParams<{ recipientId: string }>();
-  const { snapshot, completeCareTask } = useCare();
-  const recipient = snapshot.careRecipients.find((item) => item.id === recipientId);
+  const { snapshot, user, completeCareTask } = useCare();
+  const recipient = recipientId ? getUserScopedRecipient(snapshot, user.id, recipientId) : undefined;
   const now = new Date();
 
   if (!recipient) {
@@ -18,6 +18,7 @@ export default function RecipientOverviewScreen() {
       <Screen>
         <View style={styles.notFound}>
           <Text style={styles.title}>Recipient not found</Text>
+          <Text style={styles.muted}>This care recipient is unavailable from the current prototype user context.</Text>
           <SecondaryButton label="Back to Home" onPress={() => router.replace("/")} />
         </View>
       </Screen>

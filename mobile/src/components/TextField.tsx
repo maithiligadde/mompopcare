@@ -8,7 +8,7 @@ export function TextField({ label, ...props }: TextFieldProps) {
   return (
     <View style={styles.field}>
       <Text style={styles.label}>{label}</Text>
-      <TextInput placeholderTextColor="#8A938D" style={styles.input} {...props} />
+      <TextInput accessibilityLabel={props.accessibilityLabel ?? label} placeholderTextColor="#8A938D" style={styles.input} {...props} />
     </View>
   );
 }
