@@ -2,6 +2,10 @@ export function startOfLocalDay(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
+export function getNextLocalMidnight(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+}
+
 export function isBeforeToday(isoDate: string | undefined, now: Date): boolean {
   if (!isoDate) {
     return false;

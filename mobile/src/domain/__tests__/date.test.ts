@@ -1,6 +1,32 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { formatDateInput } from "../date";
+import { formatDateInput, getNextLocalMidnight } from "../date";
+
+test("next local midnight uses the next local calendar day", () => {
+  const nextMidnight = getNextLocalMidnight(new Date(2026, 6, 8, 18, 42, 17, 123));
+
+  assert.deepEqual(
+    [
+      nextMidnight.getFullYear(),
+      nextMidnight.getMonth(),
+      nextMidnight.getDate(),
+      nextMidnight.getHours(),
+      nextMidnight.getMinutes(),
+      nextMidnight.getSeconds(),
+      nextMidnight.getMilliseconds()
+    ],
+    [2026, 6, 9, 0, 0, 0, 0]
+  );
+});
+
+test("next local midnight handles a local year boundary", () => {
+  const nextMidnight = getNextLocalMidnight(new Date(2026, 11, 31, 23, 59, 59, 999));
+
+  assert.deepEqual(
+    [nextMidnight.getFullYear(), nextMidnight.getMonth(), nextMidnight.getDate(), nextMidnight.getHours()],
+    [2027, 0, 1, 0]
+  );
+});
 
 test("date input formats progressively as digits are typed", () => {
   assert.equal(formatDateInput("2"), "2");

@@ -6,10 +6,11 @@ import { buildHomeProjection } from "../src/domain/homeProjection";
 import { formatCareSummary } from "../src/domain/careState";
 import { formatDueLabel } from "../src/domain/date";
 import { useCare } from "../src/features/care/CareProvider";
+import { useLocalDayNow } from "../src/hooks/useLocalDayNow";
 
 export default function HomeScreen() {
   const { snapshot, user } = useCare();
-  const now = new Date();
+  const now = useLocalDayNow();
   const projection = buildHomeProjection(snapshot, user.id, now);
 
   return (

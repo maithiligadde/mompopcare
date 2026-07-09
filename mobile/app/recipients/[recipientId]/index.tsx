@@ -6,12 +6,13 @@ import { formatCareSummary, deriveCareState } from "../../../src/domain/careStat
 import { formatDueLabel, formatEventTimestamp } from "../../../src/domain/date";
 import { getRecipientTasks, getRecentEventsForRecipient, getUserScopedRecipient } from "../../../src/domain/selectors";
 import { useCare } from "../../../src/features/care/CareProvider";
+import { useLocalDayNow } from "../../../src/hooks/useLocalDayNow";
 
 export default function RecipientOverviewScreen() {
   const { recipientId } = useLocalSearchParams<{ recipientId: string }>();
   const { snapshot, user, completeCareTask } = useCare();
   const recipient = recipientId ? getUserScopedRecipient(snapshot, user.id, recipientId) : undefined;
-  const now = new Date();
+  const now = useLocalDayNow();
 
   if (!recipient) {
     return (
