@@ -4,7 +4,7 @@ import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } fr
 import { PrimaryButton, SecondaryButton } from "../../../../src/components/Button";
 import { Screen } from "../../../../src/components/Screen";
 import { TextField } from "../../../../src/components/TextField";
-import { parseDueInput, toDateInputValue } from "../../../../src/domain/date";
+import { formatDateInput, parseDueInput, toDateInputValue } from "../../../../src/domain/date";
 import { getUserScopedRecipient } from "../../../../src/domain/selectors";
 import { useCare } from "../../../../src/features/care/CareProvider";
 
@@ -74,9 +74,10 @@ export default function AddTaskScreen() {
             <TextField
               label="Due date, optional"
               value={dueInput}
-              onChangeText={setDueInput}
+              onChangeText={(value) => setDueInput(formatDateInput(value))}
               placeholder="YYYY-MM-DD"
               autoCapitalize="none"
+              keyboardType="number-pad"
             />
             <View style={styles.quickRow}>
               <SecondaryButton label="Today" onPress={() => setDueInput(toDateInputValue(new Date()))} />

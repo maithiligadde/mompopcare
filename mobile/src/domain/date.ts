@@ -44,6 +44,20 @@ export function parseDueInput(input: string): { dueDate?: string; error?: string
   return { dueDate: trimmed };
 }
 
+export function formatDateInput(input: string): string {
+  const digits = input.replace(/\D/g, "").slice(0, 8);
+
+  if (digits.length <= 4) {
+    return digits;
+  }
+
+  if (digits.length <= 6) {
+    return `${digits.slice(0, 4)}-${digits.slice(4)}`;
+  }
+
+  return `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6)}`;
+}
+
 export function toDateInputValue(date: Date): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
