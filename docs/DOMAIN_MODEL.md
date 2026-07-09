@@ -6,7 +6,7 @@ Working Draft — Updated through Sprint 2
 
 ## Purpose
 
-- Define the minimal working domain vocabulary for MomPopCare before database, API, or UI implementation.
+- Define and maintain the minimal working domain vocabulary that guides current and future MomPopCare implementation while database and API design remain deferred.
 - Keep the model focused on the core caregiving coordination loop.
 - Preserve essential product and privacy invariants while deferring premature authorization and collaboration complexity.
 

@@ -52,11 +52,13 @@ This document captures the foundational product context for MomPopCare during Sp
 
 ## Care Journey
 
-- To be mapped before application development begins.
+- The initial care journey is being tested through the Sprint 2 vertical slice.
+- Broader journey mapping and validation remain ongoing.
 
 ## MVP
 
-- To be defined after discovery, personas, and care journey alignment.
+- Initial MVP direction is being explored through the Sprint 2 vertical slice.
+- MVP scope remains a working question while discovery, personas, and care journey validation continue.
 
 ## Engineering Principles
 
