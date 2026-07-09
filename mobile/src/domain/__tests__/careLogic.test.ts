@@ -11,6 +11,7 @@ const NOW = new Date(2026, 6, 8, 12, 0, 0);
 const TWO_DAYS_AGO = "2026-07-06";
 const YESTERDAY = "2026-07-07";
 const TODAY = "2026-07-08";
+const COMPLETED_AT = "2026-07-08T12:00:00.000Z";
 
 test("overdue incomplete task appears as needing attention", () => {
   const repository = createInMemoryCareRepository();
@@ -37,7 +38,7 @@ test("completed task no longer appears as needing attention", () => {
     dueDate: YESTERDAY
   });
 
-  repository.completeCareTask(task.id, TODAY);
+  repository.completeCareTask(task.id, COMPLETED_AT);
   const projection = buildHomeProjection(repository.getSnapshot(), PROTOTYPE_USER_ID, NOW);
 
   assert.equal(projection.needsAttention.length, 0);
@@ -51,7 +52,7 @@ test("task completion creates a completion CareEvent", () => {
     title: "Refill prescription"
   });
 
-  const event = repository.completeCareTask(task.id, TODAY);
+  const event = repository.completeCareTask(task.id, COMPLETED_AT);
   const snapshot = repository.getSnapshot();
 
   assert.equal(event?.type, "task_completed");
@@ -104,6 +105,53 @@ test("Home projection includes only recipient contexts available to the current 
     projection.needsAttention.map((item) => item.task.id),
     ["task_authorized"]
   );
+});
+
+test("Home today projection excludes tasks from unauthorized recipient contexts", () => {
+  const data: CareData = {
+    ...createInitialCareData(),
+    users: [
+      { id: PROTOTYPE_USER_ID, displayName: "Maithili" },
+      { id: "user_other", displayName: "Other User" }
+    ],
+    careRecipients: [
+      { id: "recipient_authorized", displayName: "Recipient A" },
+      { id: "recipient_unauthorized", displayName: "Recipient B" }
+    ],
+    memberships: [
+      { id: "membership_authorized", userId: PROTOTYPE_USER_ID, careRecipientId: "recipient_authorized" },
+      { id: "membership_unauthorized", userId: "user_other", careRecipientId: "recipient_unauthorized" }
+    ],
+    careTasks: [
+      {
+        id: "task_authorized_today",
+        careRecipientId: "recipient_authorized",
+        title: "Call clinic",
+        dueDate: TODAY,
+        status: "pending"
+      },
+      {
+        id: "task_unauthorized_today",
+        careRecipientId: "recipient_unauthorized",
+        title: "Schedule follow-up",
+        dueDate: TODAY,
+        status: "pending"
+      }
+    ],
+    careEvents: []
+  };
+
+  const projection = buildHomeProjection(data, PROTOTYPE_USER_ID, NOW);
+
+  assert.deepEqual(
+    projection.today.map((item) => item.task.id),
+    ["task_authorized_today"]
+  );
+  assert.deepEqual(
+    projection.today.map((item) => item.recipient.id),
+    ["recipient_authorized"]
+  );
+  assert.equal(projection.recipients.some((item) => item.recipient.id === "recipient_unauthorized"), false);
 });
 
 test("inaccessible recipient is rejected by the user-scoped recipient selector", () => {
@@ -175,7 +223,7 @@ test("completing one recipient's task does not mutate another recipient's state"
     dueDate: YESTERDAY
   });
 
-  repository.completeCareTask(taskA.id, TODAY);
+  repository.completeCareTask(taskA.id, COMPLETED_AT);
   const snapshot = repository.getSnapshot();
 
   assert.equal(snapshot.careTasks.find((task) => task.id === taskA.id)?.status, "completed");
