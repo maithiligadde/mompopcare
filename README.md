@@ -4,16 +4,16 @@ MomPopCare is a family care coordination platform focused on reducing the cognit
 
 ## Current Status
 
-Sprint 1 — Domain Discovery.
+Sprint 2 — First Vertical Slice (implementation and review).
 
 ## Repository Structure
 
 - `docs/`: product, decision, architecture, and sprint documentation
 - `docs/adr/`: architecture decision records
 - `docs/sprints/`: sprint planning and backlog documents
-- `mobile/`: reserved for the future mobile application
+- `mobile/`: Expo, React Native, and TypeScript mobile prototype
 - `backend/`: reserved for future backend services
 
 ## Initialization Status
 
-The `mobile/` and `backend/` directories are intentionally present but not initialized yet.
+The mobile prototype is initialized with an in-memory repository and a local prototype user. Its data resets when the app reloads or restarts. The prototype has no backend, production persistence, production authentication, or AI.

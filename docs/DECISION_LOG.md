@@ -42,6 +42,7 @@ This document records project-wide product and domain decisions for MomPopCare a
 
 - Decision: One Care Circle centers on exactly one Care Recipient.
 - Status: Working
+- Superseded by: Entry 016
 - Date: 2026-07-08
 - Context: Sprint 1 domain discovery needs a clear collaboration boundary around a single recipient.
 - Decision: Treat one Care Circle as centered on exactly one Care Recipient.
@@ -51,6 +52,7 @@ This document records project-wide product and domain decisions for MomPopCare a
 
 - Decision: A User may belong to multiple Care Circles.
 - Status: Working
+- Supersession: Entry 016 replaces the CareCircle-specific model; the principle that one User may participate in multiple isolated recipient contexts remains current.
 - Date: 2026-07-08
 - Context: Caregivers may coordinate care for more than one loved one.
 - Decision: Allow one User to participate in multiple Care Circles while keeping each circle isolated.
@@ -60,6 +62,7 @@ This document records project-wide product and domain decisions for MomPopCare a
 
 - Decision: Home is a user-scoped attention projection across authorized circles.
 - Status: Working
+- Supersession: Entry 016 replaces the CareCircle-specific wording; user-scoped Home across authorized recipient contexts remains current.
 - Date: 2026-07-08
 - Context: Multi-circle caregivers need a useful cross-circle view without collapsing underlying privacy boundaries.
 - Decision: Treat Home as an attention-based projection across only the Care Circles the authenticated user is authorized to access.
@@ -72,7 +75,7 @@ This document records project-wide product and domain decisions for MomPopCare a
 - Date: 2026-07-08
 - Context: A care recipient may not use the app at first and may later become an active participant.
 - Decision: Keep CareRecipient and User conceptually separate, with an optional link between them.
-- Consequences: A recipient can later become an active User without recreating the care profile or migrating to a new Care Circle.
+- Consequences: A recipient can later become an active User without recreating the care profile or migrating to a new recipient context.
 
 ## Entry 009
 
@@ -125,6 +128,7 @@ This document records project-wide product and domain decisions for MomPopCare a
 
 - Decision: Sprint 1 domain model is deliberately simplified.
 - Status: Working
+- Supersession: Entry 016 replaces CareCircle as a current core concept; the simplicity principle and other deferrals in this entry remain current.
 - Date: 2026-07-08
 - Context: The Sprint 1 model was drifting into premature authorization and collaboration complexity beyond the core caregiving coordination problem.
 - Decision: Prefer the simplest model that preserves essential product and privacy invariants. Keep CareCircle as a working recipient-centered boundary, and defer AccessGrant, CareRecord, Support Network modeling, and complex invitation or delegation rules until product evidence requires more complexity.
@@ -134,7 +138,17 @@ This document records project-wide product and domain decisions for MomPopCare a
 
 - Decision: CareCircle is retained provisionally.
 - Status: Working
+- Supersession: Entry 016 moves CareCircle from a provisional current concept to a deferred concept.
 - Date: 2026-07-08
 - Context: CareCircle may provide a useful recipient-centered collaboration and isolation boundary, but its necessity over direct Membership-to-CareRecipient association is not proven.
 - Decision: Retain CareCircle as a working internal concept, do not finalize it as user-facing, and keep direct User/Membership-to-CareRecipient association under consideration as a simpler alternative.
 - Consequences: Sprint 2 vertical-slice implementation should test whether CareCircle has independent responsibility that CareRecipient cannot cleanly own. Simplicity remains preferred unless the abstraction proves necessary.
+
+## Entry 016
+
+- Decision: Current MVP model uses direct Membership-to-CareRecipient.
+- Status: Working
+- Date: 2026-07-08
+- Context: Sprint 2 implementation evidence showed CareCircle added indirection without independent responsibility. CareCircle only contained `id` and `careRecipientId`, tasks and events associated directly with CareRecipient, recipient routes used recipient identifiers, and Home used CareCircle only as an intermediate membership lookup.
+- Decision: Simplify the current MVP model to direct Membership-to-CareRecipient. CareCircle is deferred, not permanently forbidden, and may be reconsidered only if future evidence requires an independent collaboration context.
+- Consequences: The mobile prototype uses direct recipient membership, and Home remains user-scoped across authorized CareRecipient contexts. CareCircle is deferred, and simplicity remains preferred unless a future slice shows the abstraction has responsibilities CareRecipient cannot cleanly own.

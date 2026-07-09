@@ -1,0 +1,59 @@
+import { deriveCareState } from "./careState";
+import { isBeforeToday, isToday } from "./date";
+import { getAuthorizedRecipientIds, getRecipientTasks } from "./selectors";
+import { CareData, CareRecipient, CareStateSummary, CareTask } from "./types";
+
+export interface HomeTaskItem {
+  recipient: CareRecipient;
+  task: CareTask;
+}
+
+export interface HomeRecipientItem {
+  recipient: CareRecipient;
+  careState: CareStateSummary;
+}
+
+export interface HomeProjection {
+  needsAttention: HomeTaskItem[];
+  today: HomeTaskItem[];
+  recipients: HomeRecipientItem[];
+}
+
+export function buildHomeProjection(data: CareData, userId: string, now: Date): HomeProjection {
+  const authorizedRecipientIds = getAuthorizedRecipientIds(data, userId);
+  const authorizedRecipients = data.careRecipients.filter((recipient) => authorizedRecipientIds.has(recipient.id));
+  const needsAttention: HomeTaskItem[] = [];
+  const today: HomeTaskItem[] = [];
+
+  for (const recipient of authorizedRecipients) {
+    const tasks = getRecipientTasks(data, recipient.id);
+
+    for (const task of tasks) {
+      if (task.status !== "pending") {
+        continue;
+      }
+
+      if (isBeforeToday(task.dueDate, now)) {
+        needsAttention.push({ recipient, task });
+      } else if (isToday(task.dueDate, now)) {
+        today.push({ recipient, task });
+      }
+    }
+  }
+
+  needsAttention.sort((left, right) => {
+    const leftDue = left.task.dueDate ?? "9999-12-31";
+    const rightDue = right.task.dueDate ?? "9999-12-31";
+
+    return leftDue.localeCompare(rightDue);
+  });
+
+  return {
+    needsAttention,
+    today,
+    recipients: authorizedRecipients.map((recipient) => ({
+      recipient,
+      careState: deriveCareState(getRecipientTasks(data, recipient.id), now)
+    }))
+  };
+}
