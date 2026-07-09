@@ -91,7 +91,11 @@ export default function AddTaskScreen() {
               />
               <SecondaryButton label="Clear" onPress={() => setDueInput("")} />
             </View>
-            {error ? <Text style={styles.error}>{error}</Text> : null}
+            {error ? (
+              <Text accessibilityLiveRegion="assertive" accessibilityRole="alert" style={styles.error}>
+                {error}
+              </Text>
+            ) : null}
             <PrimaryButton label="Add task" onPress={submit} />
           </View>
         </ScrollView>

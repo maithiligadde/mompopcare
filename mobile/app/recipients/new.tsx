@@ -50,7 +50,11 @@ export default function AddRecipientScreen() {
               onChangeText={setRelationshipLabel}
               placeholder="Mother"
             />
-            {error ? <Text style={styles.error}>{error}</Text> : null}
+            {error ? (
+              <Text accessibilityLiveRegion="assertive" accessibilityRole="alert" style={styles.error}>
+                {error}
+              </Text>
+            ) : null}
             <PrimaryButton label="Add" onPress={submit} />
           </View>
         </ScrollView>
