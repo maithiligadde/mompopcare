@@ -42,7 +42,7 @@ export default function HomeScreen() {
                 <Text style={styles.sectionTitle}>Needs attention</Text>
                 {projection.needsAttention.map((item) => (
                   <View key={item.task.id} style={styles.attentionItem}>
-                    <View>
+                    <View style={styles.taskColumn}>
                       <Text style={styles.recipientName}>{item.recipient.displayName}</Text>
                       <Text style={styles.taskTitle}>{item.task.title}</Text>
                     </View>
@@ -57,7 +57,7 @@ export default function HomeScreen() {
                 <Text style={styles.sectionTitle}>Today</Text>
                 {projection.today.map((item) => (
                   <View key={item.task.id} style={styles.todayItem}>
-                    <View>
+                    <View style={styles.taskColumn}>
                       <Text style={styles.recipientName}>{item.recipient.displayName}</Text>
                       <Text style={styles.taskTitle}>{item.task.title}</Text>
                     </View>
@@ -165,6 +165,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: 12,
     padding: 14
+  },
+  taskColumn: {
+    flex: 1,
+    minWidth: 0
   },
   recipientName: {
     color: "#58625C",
