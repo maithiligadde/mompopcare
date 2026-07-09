@@ -46,9 +46,15 @@ export function createInMemoryCareRepository(): CareRepository {
         memberships: [...data.memberships, membership]
       };
 
-      return recipient;
+      return { ...recipient };
     },
     addCareTask: (input: AddCareTaskInput): CareTask => {
+      const recipientExists = data.careRecipients.some((recipient) => recipient.id === input.careRecipientId);
+
+      if (!recipientExists) {
+        throw new Error(`Care recipient not found: ${input.careRecipientId}`);
+      }
+
       const task: CareTask = {
         id: nextId("task"),
         careRecipientId: input.careRecipientId,
@@ -62,7 +68,7 @@ export function createInMemoryCareRepository(): CareRepository {
         careTasks: [...data.careTasks, task]
       };
 
-      return task;
+      return { ...task };
     },
     completeCareTask: (taskId: string, completedAt: string = new Date().toISOString()): CareEvent | undefined => {
       const task = data.careTasks.find((item) => item.id === taskId);
@@ -91,7 +97,7 @@ export function createInMemoryCareRepository(): CareRepository {
         careEvents: [...data.careEvents, event]
       };
 
-      return event;
+      return { ...event };
     }
   };
 }
