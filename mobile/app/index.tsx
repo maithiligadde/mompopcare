@@ -7,6 +7,7 @@ import { formatCareSummary } from "../src/domain/careState";
 import { formatDueLabel } from "../src/domain/date";
 import { useCare } from "../src/features/care/CareProvider";
 import { useLocalDayNow } from "../src/hooks/useLocalDayNow";
+import { colors, radii } from "../src/theme/tokens";
 
 export default function HomeScreen() {
   const { snapshot, user } = useCare();
@@ -27,18 +28,14 @@ export default function HomeScreen() {
           <View style={styles.emptyPanel}>
             <Text style={styles.emptyTitle}>Add someone you care for</Text>
             <Text style={styles.emptyCopy}>
-              Start with a loved one and one task. Prototype data is in memory and resets when the app reloads.
+              Start with one loved one and one task. You’ll see what needs attention here.
             </Text>
             <PrimaryButton label="Add loved one" onPress={() => router.push("/recipients/new")} />
           </View>
         ) : (
           <>
-            <View style={styles.actionRow}>
-              <PrimaryButton label="Add loved one" onPress={() => router.push("/recipients/new")} />
-            </View>
-
             {projection.needsAttention.length > 0 ? (
-              <View style={styles.section}>
+              <View style={[styles.section, styles.attentionSection]}>
                 <Text style={styles.sectionTitle}>Needs attention</Text>
                 {projection.needsAttention.map((item) => (
                   <View key={item.task.id} style={styles.attentionItem}>
@@ -55,40 +52,48 @@ export default function HomeScreen() {
             {projection.today.length > 0 ? (
               <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Today</Text>
-                {projection.today.map((item) => (
-                  <View key={item.task.id} style={styles.todayItem}>
-                    <View style={styles.taskColumn}>
-                      <Text style={styles.recipientName}>{item.recipient.displayName}</Text>
-                      <Text style={styles.taskTitle}>{item.task.title}</Text>
+                <View style={styles.surfaceList}>
+                  {projection.today.map((item, index) => (
+                    <View key={item.task.id} style={[styles.todayItem, index > 0 && styles.listDivider]}>
+                      <View style={styles.taskColumn}>
+                        <Text style={styles.recipientName}>{item.recipient.displayName}</Text>
+                        <Text style={styles.taskTitle}>{item.task.title}</Text>
+                      </View>
+                      <Text style={styles.todayLabel}>Due today</Text>
                     </View>
-                    <Text style={styles.todayLabel}>Due today</Text>
-                  </View>
-                ))}
+                  ))}
+                </View>
               </View>
             ) : null}
 
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>People you care for</Text>
-              {projection.recipients.map((item) => (
-                <View key={item.recipient.id} style={styles.personRow}>
-                  <View style={styles.personText}>
-                    <Text style={styles.personName}>{item.recipient.displayName}</Text>
-                    {item.recipient.relationshipLabel ? (
-                      <Text style={styles.relationship}>{item.recipient.relationshipLabel}</Text>
-                    ) : null}
-                    <Text style={styles.summary}>{formatCareSummary(item.careState)}</Text>
+              <View style={styles.surfaceList}>
+                {projection.recipients.map((item, index) => (
+                  <View key={item.recipient.id} style={[styles.personRow, index > 0 && styles.listDivider]}>
+                    <View style={styles.personText}>
+                      <Text style={styles.personName}>{item.recipient.displayName}</Text>
+                      {item.recipient.relationshipLabel ? (
+                        <Text style={styles.relationship}>{item.recipient.relationshipLabel}</Text>
+                      ) : null}
+                      <Text style={styles.summary}>{formatCareSummary(item.careState)}</Text>
+                    </View>
+                    <SecondaryButton
+                      label="Open"
+                      onPress={() =>
+                        router.push({
+                          pathname: "/recipients/[recipientId]",
+                          params: { recipientId: item.recipient.id }
+                        })
+                      }
+                    />
                   </View>
-                  <SecondaryButton
-                    label="Open"
-                    onPress={() =>
-                      router.push({
-                        pathname: "/recipients/[recipientId]",
-                        params: { recipientId: item.recipient.id }
-                      })
-                    }
-                  />
-                </View>
-              ))}
+                ))}
+              </View>
+            </View>
+
+            <View style={styles.actionRow}>
+              <PrimaryButton label="Add loved one" onPress={() => router.push("/recipients/new")} />
             </View>
           </>
         )}
@@ -99,37 +104,39 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    gap: 20,
-    paddingBottom: 36
+    gap: 28,
+    paddingBottom: 48
   },
   hero: {
-    gap: 8
+    gap: 7,
+    paddingTop: 6
   },
   greeting: {
-    color: "#2F3430",
-    fontSize: 32,
-    fontWeight: "800"
+    color: colors.text,
+    fontSize: 28,
+    fontWeight: "700",
+    letterSpacing: -0.4,
+    lineHeight: 36
   },
   subtitle: {
-    color: "#58625C",
-    fontSize: 16,
-    lineHeight: 23
+    color: colors.textSecondary,
+    fontSize: 15,
+    lineHeight: 22
   },
   emptyPanel: {
-    backgroundColor: "#FFFFFF",
-    borderColor: "#E4DED5",
-    borderRadius: 8,
-    borderWidth: 1,
-    gap: 14,
-    padding: 18
+    backgroundColor: colors.surfaceAlt,
+    borderRadius: radii.surface,
+    gap: 16,
+    padding: 20
   },
   emptyTitle: {
-    color: "#2F3430",
-    fontSize: 22,
-    fontWeight: "800"
+    color: colors.text,
+    fontSize: 20,
+    fontWeight: "700",
+    letterSpacing: -0.2
   },
   emptyCopy: {
-    color: "#58625C",
+    color: colors.textSecondary,
     fontSize: 15,
     lineHeight: 22
   },
@@ -137,88 +144,110 @@ const styles = StyleSheet.create({
     alignItems: "flex-start"
   },
   section: {
-    gap: 10
+    gap: 12
   },
   sectionTitle: {
-    color: "#2F3430",
-    fontSize: 18,
-    fontWeight: "800"
+    color: colors.text,
+    fontSize: 19,
+    fontWeight: "700",
+    letterSpacing: -0.2
+  },
+  attentionSection: {
+    backgroundColor: colors.attentionBackground,
+    borderRadius: radii.surface,
+    gap: 14,
+    padding: 17
   },
   attentionItem: {
     alignItems: "center",
-    backgroundColor: "#FFF9F5",
-    borderColor: "#DFAE85",
-    borderRadius: 8,
-    borderWidth: 1,
     flexDirection: "row",
+    gap: 14,
     justifyContent: "space-between",
-    gap: 12,
-    padding: 14
+    minHeight: 48
+  },
+  surfaceList: {
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    borderRadius: radii.surface,
+    borderWidth: 1,
+    overflow: "hidden"
   },
   todayItem: {
     alignItems: "center",
-    backgroundColor: "#FFFFFF",
-    borderColor: "#D8E1D8",
-    borderRadius: 8,
-    borderWidth: 1,
     flexDirection: "row",
+    gap: 14,
     justifyContent: "space-between",
-    gap: 12,
-    padding: 14
+    minHeight: 68,
+    paddingHorizontal: 16,
+    paddingVertical: 13
+  },
+  listDivider: {
+    borderTopColor: colors.separator,
+    borderTopWidth: 1
   },
   taskColumn: {
     flex: 1,
+    gap: 3,
     minWidth: 0
   },
   recipientName: {
-    color: "#58625C",
+    color: colors.textSecondary,
     fontSize: 13,
-    fontWeight: "700",
-    textTransform: "uppercase"
+    fontWeight: "600"
   },
   taskTitle: {
-    color: "#2F3430",
+    color: colors.text,
     fontSize: 16,
-    fontWeight: "700",
-    marginTop: 2
+    fontWeight: "600",
+    lineHeight: 22
   },
   overdueLabel: {
-    color: "#8D3C17",
-    fontSize: 13,
-    fontWeight: "800"
+    backgroundColor: colors.surface,
+    borderRadius: radii.control,
+    color: colors.attention,
+    fontSize: 12,
+    fontWeight: "700",
+    overflow: "hidden",
+    paddingHorizontal: 10,
+    paddingVertical: 6
   },
   todayLabel: {
-    color: "#2D5E55",
-    fontSize: 13,
-    fontWeight: "800"
+    backgroundColor: colors.primaryBackground,
+    borderRadius: radii.control,
+    color: colors.primary,
+    fontSize: 12,
+    fontWeight: "700",
+    overflow: "hidden",
+    paddingHorizontal: 10,
+    paddingVertical: 6
   },
   personRow: {
     alignItems: "center",
-    backgroundColor: "#FFFFFF",
-    borderColor: "#E4DED5",
-    borderRadius: 8,
-    borderWidth: 1,
     flexDirection: "row",
-    gap: 12,
+    gap: 14,
     justifyContent: "space-between",
-    padding: 14
+    minHeight: 82,
+    paddingHorizontal: 16,
+    paddingVertical: 14
   },
   personText: {
     flex: 1,
-    gap: 3
+    gap: 3,
+    minWidth: 0
   },
   personName: {
-    color: "#2F3430",
-    fontSize: 18,
-    fontWeight: "800"
+    color: colors.text,
+    fontSize: 17,
+    fontWeight: "700"
   },
   relationship: {
-    color: "#58625C",
-    fontSize: 14
+    color: colors.textMuted,
+    fontSize: 13
   },
   summary: {
-    color: "#58625C",
+    color: colors.textSecondary,
     fontSize: 14,
-    marginTop: 3
+    lineHeight: 20,
+    marginTop: 2
   }
 });

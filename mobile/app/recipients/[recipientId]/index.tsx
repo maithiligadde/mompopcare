@@ -7,6 +7,7 @@ import { formatDueLabel, formatEventTimestamp } from "../../../src/domain/date";
 import { getRecipientTasks, getRecentEventsForRecipient, getUserScopedRecipient } from "../../../src/domain/selectors";
 import { useCare } from "../../../src/features/care/CareProvider";
 import { useLocalDayNow } from "../../../src/hooks/useLocalDayNow";
+import { colors } from "../../../src/theme/tokens";
 
 export default function RecipientOverviewScreen() {
   const { recipientId } = useLocalSearchParams<{ recipientId: string }>();
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   summary: {
-    color: "#2D5E55",
+    color: colors.textSecondary,
     fontSize: 16,
     fontWeight: "700",
     marginTop: 6
