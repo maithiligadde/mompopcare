@@ -11,7 +11,9 @@
     "typecheck": "tsc --noEmit",
     "test": "npm run clean:test && tsc -p tsconfig.test.json && node --test .tmp-tests/**/*.test.js",
     "clean:test": "node -e \"require('fs').rmSync('.tmp-tests', { recursive: true, force: true })\"",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "check:expo": "CI=1 expo install --check",
+    "validate": "npm run typecheck && npm test && npm run lint && npm run check:expo"
   },
   "dependencies": {
     "expo": "^57.0.4",
